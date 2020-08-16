@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <script type="application/javascript">//inicia o script do html
+
+
+var sun = new Image();//criou uma variavel sol que recebera uma imagem
+var moon = new Image();//criou uma lua que recebera uma imagem
+var earth = new Image();//cria uma luca que recebera uma imgaem
+
+
+
+function init(){
+  sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';//png do sol em png com fundo atribuida a avariavel acima do sun
+  moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';//png da lua (somente a lua sem nada em volta)
+  earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';//png da terra sem nada em volta
+  setInterval(draw,100);//seta um intervalo a ser exibido de 100 milesgundos com a funcao draw
+}
+
+function draw() {
+  var ctx = document.getElementById('canvas').getContext('2d');//recebe um contexto e chama o documento canvas
+
+  ctx.globalCompositeOperation = 'color-dodge';//serve para escolher qual tipo de mistura quer na imagem(muito cuidado pois dependendo da composicao de cores seu denheo poder trazer erros) https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
+  ctx.clearRect(0,0,300,300); // limpa o canvas antigo
+
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';//pinta tudo dentro de preto
+  ctx.strokeStyle = 'rgba(0,153,255,0.4)';//pinta todas linhas de azul com transparencia 0.4
+
+  ctx.save()//inicia o salvamento do que ira rodar no canvas
+
+  ctx.translate(150,150);//move tudo abaixo pelo centro para a posicao x 150 y 150 
+
+  // Earth
+  var time = new Date();//cria um novo objeto de data como segundos do zero contando e ficara salva na execucao o seu valor
+  ctx.rotate( ((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds() );//conta da rotacao da orbita da terra sobre o sol 3 é o maximo para o giro completo do mesmo
+  ctx.translate(105,0);//move tudo abaixo por um centro para posicao x 105 e y0 que é fora do circulo da rotacao
+  ctx.fillRect(0,-12,50,24); // cria um rentagulo preto com tranparencia 0.4 definidas la em cima e ele ficara rodando na parte de fora da rotacao(na parte do circulo pre determinada)
+  ctx.drawImage(earth,-12,-12);// recebe a imgaem em png da net e coloca metade pra dentro e metade pra fora (ela n roda e sim sua combra roda)
+
+  // Moon
+  ctx.save()//salva o desenho novamente para garantir sua reescrita
+  ctx.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/6000)*time.getMilliseconds() );//rotacao da lua sobre a terra com mesmo parametros da rotacao sobre o sol
+  ctx.translate(0,28.5);//move tudo abaixo para o ponto expecifico( orbita terra) e o gira com o funcao a cima
+  ctx.drawImage(moon,-3.5,-3.5);//recebe a imagem na posicao expecifica
+  ctx.restore();//retorna o primeiro save
+
+  ctx.restore();//retorna o segundo save
+  
+  ctx.beginPath();//comeca a desenhas
+  ctx.arc(150,150,105,0,Math.PI*2,false); // desenha um circulo de orbita da terra sendo desenhado com linha azul predefinida acima(ele n esta sendo atualizado)
+  ctx.stroke();//para de desenhas
+ 
+  ctx.drawImage(sun,0,0,300,300);//recebe a imagem do sol + o fundo do tamnhao do canvas e coloca certinho no tamanho
+}
+  </script>
+ </head>
+ <body onload="init();">
+   <canvas id="canvas" width="450" height="450"></canvas>
+ </body>
+</html>

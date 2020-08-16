@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <script type="application/javascript">
+    function init() {
+        ultimo = Date.now();
+        requestAnimationFrame(draw);
+    }
+    var angulo = 0;
+    var ultimo = 0;
+
+    function draw() {
+      var canvas = document.getElementById('canvas');
+      var ctx = canvas.getContext('2d');
+      if (angulo > 2 * Math.PI) {
+        angulo = 0;
+      } else {
+        angulo = angulo + 0.1;
+      }
+
+      var agora = Date.now();
+      var intervalo = agora - ultimo;
+      ultimo = agora;
+
+      function grandomico(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+      ctx.save();
+
+      
+      
+      //ctx.clearRect(0,0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(255,255,255, 0.2)';
+      ctx.fillRect(0,0, canvas.width, canvas.height);
+      //ctx.rotate(angulo);
+      ctx.fillStyle = 'rgb(0, 0, 0)';
+      
+
+      ctx.translate(200, 200);
+      ctx.rotate(angulo);
+      ctx.fillStyle = 'rgb(0, 0, 0)';
+      ctx.fillRect(0, 0, 10, 10);
+
+      ctx.beginPath();
+      ctx.moveTo(05, 05);
+      ctx.lineTo(00, 200);
+      //Math.random() 0 a 1  -> * 255   Math.round();
+
+
+      ctx.strokeStyle = `rgb(${grandomico(0,255)},0,0)`;
+      ctx.lineWidth = 5;
+      ctx.stroke();
+      ctx.restore();
+      requestAnimationFrame(draw);
+    }
+  </script>
+ </head>
+ <style type="text/css">
+  canvas { border: 1px solid black; }
+</style>
+ <body onload="init();">
+   <canvas id="canvas" width="450" height="450"></canvas>
+ </body>
+</html>

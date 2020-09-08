@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <script type="application/javascript">
+   function draw() {
+  var ctx = document.getElementById('canvas').getContext('2d');
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      ctx.save();
+      ctx.fillStyle = 'rgb(' + (200 * i) + ', ' + (10  * i) + ', 20)';
+      ctx.translate(1 + j * 40, 1 + i * 40);
+      ctx.fillRect(0, 0, 25, 25);
+      ctx.restore();
+    }
+  }
+}
+  </script>
+  <style type="text/css">
+    canvas { border: 1px solid yellow; }
+  </style>
+
+ </head>
+ <body onload="draw();">
+   <canvas id="canvas" width="110" height="110"></canvas>
+ </body>
+</html>

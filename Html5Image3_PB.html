@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html>
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Chrome Image Manipulation</title>  
+    
+<script type="text/javascript">
+  var img = new Image();
+  img.onload = init;
+  img.src = "DSC_9361.png";
+
+  function init(ev) {
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    //var img = document.getElementById("imageId");
+
+    // read the width and height of the canvas
+    var width = canvas.width;
+    var height = canvas.height;
+
+    // stamp the image on the left of the canvas:
+    ctx.drawImage(img, 0, 0);
+    
+    // get all canvas pixel data
+    var imageData = ctx.getImageData(0, 0, width, height);
+    var pix = imageData.data;
+    // Every four values equals 1 pixel.
+    for (i = 0; i < pix.length; i += 4) {
+            var r = pix[i];   // RED
+            var g = pix[i+1]; // GREEN
+            var b = pix[i+2]; // BLUE
+            var a = pix[i+3]; // ALPHA
+
+            var media = (r+g+b)/3;
+            pix[i] = media;   // RED
+            pix[i+1] = media; // GREEN
+            pix[i+2] = media; // BLUE
+    }
+
+    // put pixel data on canvas
+    ctx.putImageData(imageData, 0, 0);
+}
+</script>
+   
+    <style type="text/css">  
+      canvas { border: 1px solid black; }  
+    </style>  
+  </head>  
+  <body>
+  Carregamento da imagem por onload na própria imagem.
+  <br>No Google Chrome está ocorrendo erro de segurança se acessado de arquivo.  Em WEB não há problema.
+  <br>cd C:\Program Files (x86)\Google\Chrome\Application>
+  <br>chrome.exe --disable-web-security
+  
+    <canvas id="canvas" width="1450" height="1450"></canvas>  
+    
+  </body>  
+</html>
+
+
